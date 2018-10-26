@@ -1,0 +1,62 @@
+<%- include('../overall/header.ejs') %>
+<%- include('navbar_admin.ejs') %>
+<link rel="stylesheet" href="https://192.168.43.162:3000/css/admin.css">
+<style media="screen">
+  h1,h2,h3,h4,h5,h6{
+    font-weight: lighter;
+  }
+</style>
+<div class="container">
+  <div class="card border-info">
+    <div class="card-header bg-info text-white">
+      <h5 class="text-center"><i class="fas fa-search" aria-hidden></i> Busqueda</h5>
+    </div>
+    <form id="create_new">
+      <div class="card-body">
+        <div class="row">
+          <div class="card-body" id="result">
+            <div class="row">
+              <div class="col-4 offset-2">
+                Noticia
+                <input type="text" name="nombre" autocomplete="off" class="form-control">
+              </div>
+              <div class="col-2">
+                Evento
+                <select class="form-control" name="tipo">
+                  <option value="0">Todos</option>
+                  <option value="1">Activos</option>
+                  <option value="2">Banneados</option>
+                  <option value="3">Por Verificar</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <br>
+                <button type="submit" class="btn btn-primary" id="search_button">
+                  <span class="fas fa-search"></span>
+                  Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+  <div class="card border-info">
+    <div class="card-header bg-info text-white">
+      <h5 class="text-center"><i class="fas fa-table" aria-hidden></i> Resultados</h5>
+    </div>
+    <form id="create_new">
+      <div class="card-body">
+        <div class="row">
+          <div class="card-body" id="result">
+            <h2 style="padding-top:10%;padding-bottom:10%;color:rgb(125, 125, 125)" class="text-center">Realice una Busqueda</h2>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<%# <script type="text/javascript" src="https://192.168/43.162:3000/js/admin_users.js"></script> %>
+<%- include('../overall/footer.ejs') %>

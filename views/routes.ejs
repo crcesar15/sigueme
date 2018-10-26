@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Directions service</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+       height: 500px;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <div class="row">
+      <h3 class="text-center"style="position:fixed;">Rutas Identificadas</h3>
+    </div>
+    <div class="row" style="padding-top:50px;">
+      <div class="col-xs-6" style="margin-left:42%;position:fixed;">
+        <div id="map" >
+
+        </div>
+      </div>
+      <div class="col-xs-6 table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
+          <tr>
+            <th>Nº</th>
+            <th>Ruta</th>
+            <th>Tiempo</th>
+            <th>Distancia</th>
+            <th>Accion</th>
+          </tr>
+          <% rutas.forEach(function(ruta){ %>
+            <tr>
+              <td><%=ruta.nodo%></td>
+              <td><%=ruta.route%></td>
+              <td><%=ruta.duration%></td>
+              <td><%=ruta.distance%></td>
+              <td>
+                <button
+                    type="button"
+                    onclick="addLine(<%=ruta.origin.lng%>,<%=ruta.origin.lat%>,<%=ruta.destination.lng%>,<%=ruta.destination.lat%>)"
+                    name="button"
+                    class="btn btn-info">
+                  <span class="glyphicon glyphicon-info-sign"></span> Info
+                </button>
+              </td>
+            </tr>
+          <% }); %>
+        </table>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw"></script>
+    <script>
+      var i = 0;
+      var map;
+      function initialize() {
+        var centro = { lat: -16.4959811, lng: -68.133730};
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 17,
+          center: centro
+        });
+      }
+
+      function addLine(origen_lng,origen_lat,destino_lng,destino_lat) {
+        origen = {
+          lat: origen_lat,
+          lng: origen_lng
+        }
+        destino = {
+          lat: destino_lat,
+          lng: destino_lng
+        }
+        coordenadas = [origen,destino];
+        console.log(coordenadas);
+        map.setCenter(origen);
+        // if (i != 0) {
+        //   console.log('entro');
+        //   flightPath.setMap(null);
+        // }
+        flightPath = new google.maps.Polyline({
+          path: coordenadas,
+          strokeColor: '#ff0017',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+        flightPath.setMap(map);
+        i = 1;
+      }
+
+      function removeLine() {
+        flightPath.setMap(null);
+      }
+
+      $(document).ready(function() {
+        // for (var i = 0; i < $('button').length; i++) {
+          // $('button')[i].click();
+        // }
+        // $('button')[0].click();
+      });
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </body>
+</html>

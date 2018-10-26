@@ -1,0 +1,93 @@
+<%- include('overall/header.ejs') %>
+<link rel="stylesheet" href="https://192.168.43.162:3000/css/home.css">
+<div class="jumbotron bg-primary">
+  <div class="container" style="margin-top:-30px;">
+    <h1 class="text-center" style="padding-left:3%;"> Sigueme <i style="color:rgb(173, 238, 255);" class="fas fa-map" aria-hidden></i></span></h1>
+    <p class="text-center" style="font-size:15px">Sigueme es una aplicación social de tránsito vehicular en tiempo real y navegación asistida por GPS</p>
+  </div>
+</div>
+<div class="container" style="margin-top:-30px;">
+  <div class="row" >
+    <div class="col-12 col-lg-4 offset-lg-4">
+      <div class="content">
+        <h4 class="text-center">¡Ingresa Ahora!</h4>
+        <br>
+        <form id="login">
+          <div class="form-group">
+            <label for=""> <i class="fas fa-envelope" aria-hidden></i> Correo Electronico</label>
+            <input type="email" autocomplete="off" required class="form-control" id="user" >
+            <br>
+            <label for=""> <i class="fas fa-key" aria-hidden></i> Contraseña</label>
+            <input type="password" autocomplete="off" required class="form-control" id="password" >
+            <div id="alert_login"></div>
+          </div>
+          <center>
+            <button type="submit" class="btn btn-success" name="button"> <i class="fas fa-sign-in-alt" aria-hidden></i> Ingresar</button>
+            <br>
+            <br>
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalLogin">
+              ¿Aún no estas Registrado? ¡Ingresa Aqui!
+            </button>
+          </center>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="">Registro</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <form id="register">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-6">
+              <label for="">Nombre</label>
+              <input type="text" class="form-control" required onchange="first_upper(this)" id="firstName" placeholder="Enrique" autocomplete="off">
+            </div>
+            <div class="col-6">
+              <label for="">Apellido</label>
+              <input type="text" class="form-control" required id="lastName" onchange="first_upper(this)" placeholder="Fernandez" autocomplete="off">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <label for="">E-mail</label>
+              <input type="email" class="form-control" required id="email" placeholder="example@email.com" autocomplete="off">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <label for="">Contraseña</label>
+              <input type="password" class="form-control" required id="firstPassword" placeholder="**********" autocomplete="off">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <label for="">Confirme Contraseña</label>
+              <input type="password" class="form-control" required id="secondPassword" placeholder="**********" autocomplete="off">
+            </div>
+          </div>
+          <br>
+          <div id="alert_register"></div>
+        </div>
+        <div class="modal-footer">
+          <center>
+            <button type="button" onclick="limpiar()" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-times-circle" aria-hidden></i> Cerrar</button>
+            <button type="submit" class="btn btn-primary"> <i class="fas fa-user-plus" aria-hidden></i> Registrarse</button>
+          </center>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="js/home.js"></script>
+<%- include('overall/footer.ejs') %>

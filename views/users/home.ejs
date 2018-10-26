@@ -1,0 +1,37 @@
+<%- include('../overall/header.ejs') %>
+<%- include('navbar_users.ejs',{firstName:user.firstName,lastName:user.lastName,profileImage:user.profileImage}) %>
+<div class="container-fluid">
+  <div class="row" style="padding-top:0px;">
+    <div class="col-12">
+      <form class="" action="index.html" id="distance_form" method="post">
+        <input class="form-control" type="text" id="from_places" name="from_places" required placeholder="Origen">
+        <input type="hidden" required name="origin" id="origin">
+        <br>
+        <input class="form-control" type="text" id="to_places" name="to_places" required placeholder="Destino">
+        <input type="hidden" required name="destination" id="destination">
+        <br>
+        <button type="submit" name="button" class="sr-only">Enviar</button>
+      </form>
+      <div id="result"></div>
+    </div>
+  </div>
+  <div id="map" style="height:500px;">
+
+  </div>
+  <br>
+  <div id="alert_route" style="display:none" class="alert alert-primary">
+
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-12 text-center">
+      <button type="button" class="btn btn-primary" onclick="get_route()"><i class="fas fa-road" aria-hidden></i> Ruta</button>
+      <button type="button" class="btn btn-secondary" onclick="clear_map()"><i class="fas fa-eraser" aria-hidden></i> Limpiar</button>
+    </div>
+  </div>
+  <br>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw&libraries=places"></script>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/maps.js"></script>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/home_users.js"></script>
+<%- include('../overall/footer.ejs') %>

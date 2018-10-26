@@ -1,0 +1,53 @@
+<%- include('../overall/header.ejs') %>
+<%- include('navbar_admin.ejs') %>
+<style media="screen">
+  h1,h2,h3,h4,h5,h6{
+    font-weight: lighter;
+  }
+</style>
+<div class="container">
+  <div class="card border-info ">
+    <div class="card-header bg-info text-white">
+      <h5 class="text-center"><i class="fas fa-clock" aria-hidden></i> Nueva Noticia</h5>
+    </div>
+    <form id="create_new">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4">
+            <label for="">Titulo</label>
+            <input type="text" id="title" class="form-control">
+            <br>
+            <label for="">Descripción</label>
+            <textarea id="description" class="form-control"></textarea>
+            <br>
+            <label for="">Duración</label>
+            <input type="text" id="duration" class="form-control">
+            <br>
+            <label for="">Tipo</label>
+            <select class="form-control" required id="event_type">
+              <option value="">Seleccione Una Opción</option>
+              <option value="1">Bloqueo, Manifestación</option>
+              <option value="2">Evento Social</option>
+              <option value="3">Mantenimiento de Vias</option>
+              <option value="4">Otros</option>
+            </select>
+          </div>
+          <div class="col-8">
+            <label for="">Ubicación</label>
+            <br>
+            <div id="map" style="height:350px;">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <button type="submit" class="btn btn-success"><i class="fas fa-save" aria-hidden></i> Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw"></script>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/maps.js"></script>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/create_news_admin.js"></script>
+<%- include('../overall/footer.ejs') %>

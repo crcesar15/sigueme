@@ -1,0 +1,84 @@
+<%- include('../overall/header.ejs') %>
+<%- include('navbar_users.ejs',{firstName:user.firstName,lastName:user.lastName,profileImage:user.profileImage}) %>
+<style media="screen">
+  h1,h2,h3,h4,h5,h6{
+    margin-top: 10px;
+  }
+</style>
+<div class="container">
+  <div class="card border-success">
+    <div class="text-center card-header bg-success text-white">
+      <h6><i class="fas fa-location-arrow" aria-hidden></i> Mis Noticias</h6>
+    </div>
+    <div class="card-body text-center">
+      <%if(my_news.length > 0){%>
+        <div class="card-deck-wrapper">
+          <div class="card-deck">
+            <% my_news.forEach(function(notice){%>
+              <div class="card">
+                <div class="card-header text-left">
+                  <h6 style="float:left" class="card-title"><%=notice.title%></h6>
+                  <button style="float:right" type="button" onclick="deleteNew('<%=notice._id%>',<%=notice.node%>)" class="btn btn-danger btn-sm"><i class="fas fa-trash" aria-hidden></i></button>
+                  <a style="float:right" href="https://192.168.43.162:3000/users/news/<%=notice._id%>" class="btn btn-secondary btn-sm"><i class="fas fa-info-circle" aria-hidden></i></a>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-4">
+                      <p class="text-center"><i class="fas fa-user" style="font-size:45px; color:rgb(158, 158, 158)" aria-hidden></i></p>
+                      <p class="card-text text-center" style="font-size:10px;">Tú</p>
+                    </div>
+                    <div class="col-8">
+                      <p class="card-text"><%=notice.description%></p>
+                    </div>
+                  </div>
+                  <p class="card-text text-right"><small class="text-muted">Enviado: <%=moment(notice.created).fromNow()%></small></p>
+                </div>
+              </div>
+            <%});%>
+          </div>
+        </div>
+      <%}else{%>
+        <h6 class="text-center" style="min-height:100px;padding-top:35px;">No Agregaste Noticias</h6>
+      <%}%>
+      <a href="https://192.168.43.162:3000/users/create_new" class="btn btn-sm btn-secondary"><i class="fas fa-plus-circle" aria-hidden></i> Agregar Noticia</a>
+    </div>
+  </div>
+  <br>
+  <div class="card border-info">
+    <div class="text-center card-header bg-info text-white">
+      <h6><i class="far fa-newspaper" aria-hidden></i> Noticias</h6>
+    </div>
+    <div class="card-body">
+      <%if(news.length){%>
+        <div class="card-deck-wrapper">
+          <div class="card-deck">
+            <% news.forEach(function(notice){%>
+              <div class="card">
+                <div class="card-header">
+                  <h6 class="card-title" style="float:left"><%=notice.title%></h6>
+                  <a style="float:right" href="https://192.168.43.162:3000/users/news/<%=notice._id%>" class="btn btn-secondary btn-sm"><i class="fas fa-info-circle" aria-hidden></i></a>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-4">
+                      <p class="text-center"><i class="fas fa-user" style="font-size:45px;color:rgb(158, 158, 158);"  aria-hidden></i></p>
+                      <p class="card-text text-center" style="font-size:10px;"><%=notice.user[0].firstName%> <%=notice.user[0].lastName%></p>
+                    </div>
+                    <div class="col-8">
+                      <p class="card-text"><%=notice.description%></p>
+                    </div>
+                  </div>
+                  <p class="card-text text-right"><small class="text-muted">Enviado: <%=moment(notice.created).fromNow()%></small></p>
+                </div>
+              </div>
+            <%});%>
+          </div>
+        </div>
+      <%}else{%>
+        <h6 class="text-center" style="min-height:300px;padding-top:120px;">No Hay Eventos Aún...</h6>
+      <%}%>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/news.js"></script>
+<%- include('../overall/footer.ejs') %>

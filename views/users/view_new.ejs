@@ -1,0 +1,75 @@
+<%- include('../overall/header.ejs') %>
+<%- include('navbar_users.ejs',{firstName:user.firstName,lastName:user.lastName,profileImage:user.profileImage}) %>
+<style media="screen">
+  h1,h2,h3,h4,h5,h6{
+    font-weight: lighter;
+  }
+</style>
+<div class="container">
+  <div class="card border-info">
+    <div class="card-header bg-info text-white">
+      <h5 style="float:left" class="text-center"><i class="fas fa-clock" aria-hidden></i> Noticia</h5>
+      <button style="float:right" type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-flag" aria-hidden></i></button>
+    </div>
+    <br>
+        <div class="col-12">
+          <label for="">Titulo</label>
+          <input readonly type="text" id="title" class="form-control" value="<%=notice.title%>">
+          <br>
+          <label for="">Descripción</label>
+          <textarea readonly id="description" class="form-control"><%=notice.description%></textarea>
+          <br>
+          <label for="">Tipo</label>
+          <select disabled class="form-control" required id="event_type">
+            <option value="">Seleccione Una Opción</option>
+            <option <% if (notice.event_type == 1) {%>selected<%}%> value="1">Bloqueo, Manifestación</option>
+            <option <% if (notice.event_type == 2) {%>selected<%}%> value="2">Evento Social</option>
+            <option <% if (notice.event_type == 3) {%>selected<%}%> value="3">Mantenimiento de Vias</option>
+            <option <% if (notice.event_type == 4) {%>selected<%}%> value="4">Otros</option>
+          </select>
+          <br>
+          <label for="">Ubicación</label>
+          <div id="map" style="height:350px;">
+
+          </div>
+          <br>
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <a href="https://192.168.43.162:3000/users/news" class="btn btn-secondary"><i class="fas fa-arrow-alt-circle-left" aria-hidden></i> Volver a Noticias</a>
+      </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-flag" aria-hidden></i> Reportar Noticia</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-justify">
+        El uso de esta plataforma esta normado bajo nuestros terminos y condiciones, si considera que esta noticia no esta de acorde con la misma reportela. <br><br> Ayudenos a mejorar la comunidad.
+        <div style="margin-top:30px;display:none;" class="alert alert-warning" id="report_alert">
+
+        </div>
+      </div>
+      <div class="modal-footer text-center">
+        <center>
+          <button type="button"  onclick="report('<%=notice._id%>',<%=notice.reports%>)" class="btn btn-danger"><i class="fas fa-exclamation-triangle" aria-hidden></i> Reportar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle" aria-hidden></i> Cerrar</button>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw"></script>
+<script type="text/javascript">
+  var nodo = '<%=notice.node%>';
+</script>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/view_new.js"></script>
+<%- include('../overall/footer.ejs') %>

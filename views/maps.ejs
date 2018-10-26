@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Directions service</title>
+    <link rel="stylesheet" href="https://192.168.43.162:3000/bootstrap/css/bootstrap.min.css">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+       height: 500px;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <h2 class="text-center">Mapas de Google</h2>
+    <div class="row" style="padding-top:50px;">
+      <div class="col-6 ">
+        <!-- <form class="" action="index.html" id="distance_form" method="post">
+          <label for="">Origen</label><br>
+          <input class="form-control" type="text" id="from_places" name="from_places" required>
+          <input type="hidden" required name="origin" id="origin">
+          <br>
+          <label for="">Destino</label><br>
+          <input class="form-control" type="text" id="to_places" name="to_places" required>
+          <input type="hidden" required name="destination" id="destination">
+          <br>
+          <button type="submit" name="button" class="btn btn-success" >Enviar</button>
+        </form>
+        <div id="result"></div> -->
+        <div id="map">
+
+        </div>
+      </div>
+      <div class="col-6">
+        <form id="rutas">
+          <label for="">Tipo Ruta</label>
+          <select class="form-control" id="type_route">
+            <option value="2.77">lento</option>
+            <option value="5.56">normal</option>
+            <option value="11.11">rapido</option>
+          </select>
+          <br>
+          <label for="">Nombre Ruta</label>
+          <input type="text" id="ruta"  class="form-control" autocomplete="off" >
+          <br>
+          <label for="">Origen </label>
+          <input type="text" id="origen" class="form-control" autocomplete="off" >
+          <br>
+          <label for="">Destino</label>
+          <input type="text"  id="destino" class="form-control" autocomplete="off" >
+          <br>
+          <label for="">Distancia</label>
+          <input type="text" readonly id="distance" class="form-control" autocomplete="off" >
+          <br>
+          <label for="">Duracion</label>
+          <input type="text" readonly id="duration" class="form-control" autocomplete="off" >
+          <br>
+          <center>
+            <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-save"></span> Guardar</button>
+          </center>
+        </form>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw&libraries=places"></script> -->
+    </script>
+    <!-- <script>
+
+      $(document).ready(function() {
+        google.maps.event.addDomListener(window,'load',function(){
+          var from_places = new google.maps.places.Autocomplete(document.getElementById('from_places'));
+          var to_places = new google.maps.places.Autocomplete(document.getElementById('to_places'));
+
+          google.maps.event.addListener(from_places, 'place_changed',function(){
+            var from_place = from_places.getPlace();
+            var from_address = from_place.formatted_address;
+            $('#origin').val(from_address);
+          });
+
+          google.maps.event.addListener(to_places, 'place_changed',function(){
+            var to_place = to_places.getPlace();
+            var to_address = to_place.formatted_address;
+            $('#destination').val(to_address);
+          });
+        });
+
+        var calculate_distance = function(){
+          var origin = $('#origin').val();
+          var destination = $('#destination').val();
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix(
+            {
+              origins: [origin],
+              destinations: [destination],
+              travelMode: 'DRIVING',
+              unitSystem: google.maps.UnitSystem.METRIC,
+              avoidHighways: false,
+              avoidTolls: false,
+            }, callback);
+        }
+
+        var callback = function(response, status){
+          if (status != google.maps.DistanceMatrixStatus.OK) {
+            $('#result').html(err);
+            console.log(err);
+          }else {
+            console.log(response);
+          }
+        }
+
+        $('#distance_form').submit(function(event) {
+          event.preventDefault();
+          data = $(this).serializeArray();
+          console.log(data);
+          calculate_distance();
+        });name="name"
+      });
+
+    </script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw"></script>
+    <script>
+      var i = 0;
+      var markers = [];
+      var origin;
+      var destination;
+      var myStyles =[
+          {
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [
+                    { visibility: "off" }
+              ]
+          }
+      ];
+      function initialize() {
+        var centro = { lat: -16.4959811, lng: -68.133730};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 17,
+          center: centro,
+          streetViewControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: myStyles
+        });
+
+        // This event listener calls addMarker() when the map is clicked.
+        google.maps.event.addListener(map, 'click', function(event) {
+          addMarker(event.latLng, map);
+        });
+
+      }
+
+      // Adds a marker to the map.
+      function addMarker(location, map) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+        if (i == 0) {
+          $('input#origen').val('{"lat":'+location.lat()+',"lng":'+location.lng()+'}')
+          origin = location;
+          i = i + 1;
+        }else {
+          $('input#destino').val('{"lat":'+location.lat()+',"lng":'+location.lng()+'}')
+          destination = location;
+          calculate_distance();
+        }
+      }
+
+      var calculate_distance = function(){
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+          {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false,
+          }, callback);
+      }
+
+      var callback = function(response, status){
+        if (status != google.maps.DistanceMatrixStatus.OK) {
+          $('#result').html(err);
+          console.log(err);
+        }else {
+          ruta = response.originAddresses+' - '+response.destinationAddresses;
+          $('input#ruta').val(ruta);
+          distance = Math.ceil(Math.sqrt(Math.pow(origin.lat()-destination.lat(),2) + Math.pow(origin.lng()-destination.lng(),2))*111110);
+          time = Math.ceil(distance/$('select#type_route').val());
+          $('input#distance').val(distance);
+          $('input#duration').val(time);
+        }
+      }
+
+      $('form#rutas').submit(function(event) {
+        event.preventDefault();
+        origin = $('input#origen').val();
+        origin = JSON.parse(origin);
+        destination = $('input#destino').val();
+        destination = JSON.parse(destination);
+        datos = {
+          route: $('input#ruta').val(),
+          origin: origin,
+          destination:destination,
+          duration: $('input#duration').val(),
+          distance: $('input#distance').val()
+        }
+        $.ajax({
+          url: '/vias',
+          type: 'POST',
+          contentType: 'application/json',
+          dataType: 'JSON',
+          data: JSON.stringify(datos),
+        })
+        .done(function(msg) {
+          console.log(msg);
+          if (msg == 1) {
+            alert('Guardado con exito');
+          }else {
+            alert('Error 500');
+          }
+        })
+        .fail(function() {
+          alert('Ops. Ocurrio un error');
+        });
+        // window.location.reload();
+      });
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </body>
+</html>

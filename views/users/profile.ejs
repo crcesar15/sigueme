@@ -1,0 +1,106 @@
+<%- include('../overall/header.ejs') %>
+<%- include('navbar_users.ejs',{firstName:user.firstName,lastName:user.lastName,profileImage:user.profileImage}) %>
+<style media="screen">
+  h1,h2,h3,h4,h5,h6{
+    margin-top: 10px;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-8 offset-sm-2">
+      <div class="card border-success">
+        <div class="text-center card-header bg-success text-white">
+          <h6 class="text-center"><i class="fas fa-wrench" aria-hidden></i> Informacion de Perfil</h6>
+        </div>
+        <form id="update" action="https://192.168.43.162:3000/users/update_profile/<%=user._id%>">
+          <div class="card-body">
+            <div class="row">
+              <div class="offset-3 col-6 col-sm-5 offset-sm-1" >
+                <a data-toggle="modal" data-target="#myModal">
+                  <% if(user.profileImage == ''){%>
+                    <center>
+                      <i class="fas fa-user-circle fa-7x"></i>
+                    </center>
+                  <% }else{%>
+                      <img  id="photo" src="https://192.168.43.162:3000/<%=user.profileImage%>" class="img-responsive img-thumbnail">
+                  <% } %>
+                </a>
+              </div>
+              <div class="col-12 col-sm-5">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-6 container-fluid">
+                      <label for="">Nombre</label>
+                      <input type="text" class="form-control data" id="firstName" autocomplete="off" value="<%=user.firstName%>" onchange="first_upper(this)" required="true">
+                    </div>
+                    <div class="col-6">
+                      <label for="">Apellido</label>
+                      <input type="text" class="form-control data" id="lastName" autocomplete="off" value="<%=user.lastName%>" onchange="first_upper(this)" required="true">
+                    </div>
+                  </div>
+                  <br>
+                  <label for="">Correo</label>
+                  <input type="text" class="form-control data" id="email" autocomplete="off" value="<%=user.email%>" readonly required="true">
+                  <br>
+                  <label for="">Contraseña</label>
+                  <input type="password" class="form-control data" id="ps1" name="password" autocomplete="off" onchange="change_password(this)" placeholder="************">
+                  <br>
+                  <label for="">Confirmar Contraseña</label>
+                  <input type="password" class="form-control data" id="ps2" name="password_confirm" disabled required="true" autocomplete="off" placeholder="************">
+                </div>
+              </div>
+            </div>
+            <div id="alert_update" style="display:none" class="col-12 col-sm-6 offset-sm-3">
+
+            </div>
+            <br>
+            <center>
+              <button class="btn btn-success" type="submit" id="savedata"><i class="fas fa-save" aria-hidden></i> Guardar</button>
+            </center>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" style="padding-top:80px">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="text-center modal-title">Cambiar Foto de Perfil</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <form id="form_photo" action="index.html" method="post">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-offset-3 col-sm-6 col-xs-10 col-xs-offset-1">
+              <% if(user.profileImage == ''){%>
+                <center>
+                  <i class="fas fa-user-circle fa-7x"></i>
+                </center>
+              <% }else{%>
+                  <img  id="photo" src="https://192.168.43.162:3000/<%=user.profileImage%>" class="img-responsive img-thumbnail">
+              <% } %>
+            </div>
+          </div>
+          <br>
+          <center>
+              <input type="file" accept="image/*" name="profile_img" id="file2" style="display:none">
+              <button type="button" id="file1" class="btn btn-primary btn-sm"><i class="fas fa-upload" aria-hidden></i> Seleccionar Foto </button>
+              <button type="button" id="delphoto" class="btn btn-default btn-sm"><i class="fas fa-trash-alt" aria-hidden></i> Eliminar Foto</button>
+          </center>
+        </div>
+        <div class="modal-footer">
+          <center>
+            <button type="button" class="btn btn-default" id="close" data-dismiss="modal"> <i class="fas fa-times-circle" aria-hidden></i> Cerrar</button>
+            <button type="button" id="save" class="btn btn-success sr-only"> <i class="fas fa-save" aria-hidden></i> Guardar</button>
+          </center>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/profile.js"></script>
+<%- include('../overall/footer.ejs') %>
