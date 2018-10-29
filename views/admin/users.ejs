@@ -11,27 +11,27 @@
     <div class="card-header bg-info text-white">
       <h5 class="text-center"><i class="fas fa-search" aria-hidden></i> Busqueda</h5>
     </div>
-    <form id="create_new">
+    <form id="search_users">
       <div class="card-body">
         <div class="row">
-          <div class="card-body" id="result">
+          <div class="card-body">
             <div class="row">
               <div class="col-4 offset-2">
                 Nombre o Apellido
-                <input type="text" name="nombre" autocomplete="off" class="form-control">
+                <input type="text" id="name" autocomplete="off" class="form-control">
               </div>
               <div class="col-2">
                 Tipo
-                <select class="form-control" name="tipo">
-                  <option value="0">Todos</option>
+                <select class="form-control" id="type">
+                  <option value="">Todos</option>
                   <option value="1">Activos</option>
-                  <option value="2">Banneados</option>
-                  <option value="3">Por Verificar</option>
+                  <option value="2">Bloqueados</option>
+                  <option value="0">Por Verificar</option>
                 </select>
               </div>
               <div class="col-2">
                 <br>
-                <button type="submit" class="btn btn-success" id="search_button">
+                <button type="submit" class="btn btn-info" id="search_button">
                   <span class="fas fa-search"></span>
                   Buscar
                 </button>
@@ -58,5 +58,5 @@
     </form>
   </div>
 </div>
-<script type="text/javascript" src="https://192.168/43.162:3000/js/admin_users.js"></script>
+<script type="text/javascript" src="https://192.168.43.162:3000/js/admin_users.js"></script>
 <%- include('../overall/footer.ejs') %>

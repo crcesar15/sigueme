@@ -354,7 +354,7 @@ router.put('/report_new', (req, res) => {
   }else{
     News.findByIdAndUpdate(req.body._id,{reports:req.body.reports}, function(err){
       if (err) {
-        res.status(200).send({message: 'Error al eliminar de la base de datos '+err});
+        res.status(200).send({message: 'Error al actualizar en la base de datos '+err});
       }else {
         res.status(200).send('1');
       }

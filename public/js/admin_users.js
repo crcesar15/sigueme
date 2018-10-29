@@ -1,37 +1,43 @@
 $('li#users').addClass('active');
-var cars = ["Inactivo", "Activo"];
-
+var cars = ['Sin Verificar', 'Activo', 'Bloqueado']
 $('form#search_users').submit(function(event) {
   event.preventDefault();
-  data = $(this).serializeArray();
+  data = {
+    name: $('input#name').val(),
+    type: $('select#type').val()
+  }
+  console.log(data);
   $.ajax({
-    url: '/sgcn/admin/get_users_by_name',
+    url: 'https://192.168.43.162:3000/admin/get_users',
     type: 'POST',
+    contentType: 'application/json',
     dataType: 'JSON',
-    data: data
+    data: JSON.stringify(data)
   })
   .done(function(msg) {
-    console.log(msg);
-    if (msg) {
+    console.log(msg.users);
+    if (msg.users.length) {
       html = '';
-      html += '<table class="table table-bordered table-striped table-responsive">';
+      html += '<table class="table table-bordered table-striped">';
         html += '<tr>';
           html += '<th class="text-center">Nombre y Apellido</th>';
-          html += '<th class="text-center">Usuario</th>';
-          html += '<th class="text-center">Contraseña</th>';
+          html += '<th class="text-center">Email</th>';
           html += '<th class="text-center">Estado</th>';
           html += '<th class="text-center">Accion</th>';
         html += '</tr>';
-        for (var i = 0; i < msg.length; i++) {
+        for (var i = 0; i < msg.users.length; i++) {
           html += '<tr>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+msg[i].nombre+' '+msg[i].apellido+'</td>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+msg[i].user+'</td>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+msg[i].pass+'</td>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+cars[msg[i].estado]+'</td>';
-            if (msg[i].estado == 0) {
-              html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status('+msg[i].id_usuario+',1)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-check"></span> Habilitar</button></td>';
+            html += '<td style="vertical-align:middle;" class="text-center">'+msg.users[i].firstName+' '+msg.users[i].lastName+'</td>';
+            html += '<td style="vertical-align:middle;" class="text-center">'+msg.users[i].email+'</td>';
+            html += '<td style="vertical-align:middle;" class="text-center">'+cars[msg.users[i].status]+'</td>';
+            if (msg.users[i].status == 0) {
+              html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="delete_user(\''+msg.users[i]._id+'\')" class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span>Eliminar</button></td>';
             }else {
-              html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status('+msg[i].id_usuario+',0)" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-ban-circle"></span> Deshabilitar</button></td>';
+              if (msg.users[i].status == 1) {
+                  html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status(\''+msg.users[i]._id+'\',2)" class="btn btn-warning btn-sm"><span class="fa fa-ban"></span> Deshabilitar</button></td>';
+              }else {
+                  html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status(\''+msg.users[i]._id+'\',1)" class="btn btn-success btn-sm"><span class="fas fa-check-circle"></span> Habilitar</button></td>';
+              }
             }
           html += '</tr>';
       }
@@ -48,8 +54,8 @@ $('form#search_users').submit(function(event) {
 
 var set_status = function(id,estado){
   $.ajax({
-    url: '/sgcn/admin/set_status/'+id+'/'+estado,
-    type: 'POST',
+    url: 'https://192.168.43.162:3000/admin/set_user_status/'+id+'/'+estado,
+    type: 'PUT',
     dataType: 'JSON'
   })
   .done(function(msg) {
@@ -57,12 +63,29 @@ var set_status = function(id,estado){
       alert('Los Accesos del Usuario han sido Modificados');
       window.location.reload();
     }else {
-      if (msg == 0) {
-        alert('No pueden Modificar los Accesos de este Usuario');
-      }else {
-        alert('Ocurrio un Error');
-        window.location.href = '/sgcn/admin';
-      }
+      alert('Ocurrio un Error');
+      window.location.reload();
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  });
+
+}
+
+var delete_user = function(id){
+  $.ajax({
+    url: 'https://192.168.43.162:3000/admin/delete_user/'+id,
+    type: 'DELETE',
+    dataType: 'JSON'
+  })
+  .done(function(msg) {
+    if (msg == 1) {
+      alert('Eliminado Correctamente');
+      window.location.reload();
+    }else {
+      alert('Ocurrio un Error');
+      window.location.reload();
     }
   })
   .fail(function() {

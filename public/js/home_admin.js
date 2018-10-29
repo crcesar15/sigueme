@@ -36,7 +36,7 @@ var get_traffic = function(){
           color = '#23aa01'
           break;
         case (msg[i].traffic < 51):
-          color = '#e4e97a'
+          color = '#ffc700'
           break;
         case (msg[i].traffic < 75):
           color = '#ff8826'
