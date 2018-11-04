@@ -22,10 +22,6 @@ router.get('/fuzzy/:data', (req, res) => {
 
 // verificar login
 router.post('/login', function(req, res, next){
-  if (req.body.user == 'admin@admin.gob' && req.body.password == '123456') {
-    req.session.admin = '2344871';
-    res.status(200).send('4');
-  }else {
     User.findOne({
       email: req.body.user,
       password: req.body.password,
@@ -38,24 +34,34 @@ router.post('/login', function(req, res, next){
         if (user == null) {
           res.status(200).send('0');
         }else {
-          if (user.status == 1) {
+          if (req.body.user == 'admin@admin.gob') {
+            req.session.admin = 1;
             req.session._id = user._id;
             req.session.firstName = user.firstName;
             req.session.lastName = user.lastName;
             req.session.email = user.email;
             req.session.profileImage = user.profileImage;
-            res.status(200).send('1');
-          }else{
-            if (user.status == 0) {
-              res.status(200).send('2');
-            }else {
-              res.status(200).send('3');
+            res.status(200).send('4');
+          }else {
+            if (user.status == 1) {
+              req.session._id = user._id;
+              req.session.firstName = user.firstName;
+              req.session.lastName = user.lastName;
+              req.session.email = user.email;
+              req.session.profileImage = user.profileImage;
+              res.status(200).send('1');
+            }else{
+              if (user.status == 0) {
+                res.status(200).send('2');
+              }else {
+                res.status(200).send('3');
+              }
             }
           }
         }
       }
     });
-  }
+  // }
 });
 //activar cuenta
 router.get('/activate/:_id', function(req, res, next) {

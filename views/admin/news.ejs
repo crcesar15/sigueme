@@ -27,7 +27,7 @@
                   <option value="1">Bloqueo, Manifestación</option>
                   <option value="2">Evento Social</option>
                   <option value="3">Mantenimiento de Vias</option>
-                  <option value="3">Otros</option>
+                  <option value="4">Otros</option>
                 </select>
               </div>
               <div class="col-2">
@@ -59,6 +59,29 @@
     </form>
   </div>
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ubicación del Evento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="map" style="height:400px">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <center>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle" aria-hidden></i>Cerrar</button>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYfXp15LPz_VuK75gqcgNicuwK1H-1BOw"></script>
 <script type="text/javascript" src="https://192.168.43.162:3000/js/moment.min.js"></script>
 <script type="text/javascript" src="https://192.168.43.162:3000/js/admin_news.js"></script>
 <%- include('../overall/footer.ejs') %>

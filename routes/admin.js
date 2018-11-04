@@ -42,19 +42,16 @@ router.get('/users', function(req, res) {
 
 
 router.get('/news', function(req, res) {
-  if (req.session.admin == '2344871') {
+  if (req.session.admin == 1) {
     res.render('admin/news');
   }else {
     res.redirect('/');
   }
 });
 
-router.get('/logout', function(req, res) {
-  if (req.params.id == '2344871') {
-    res.render('admin/home');
-  }else {
-    res.redirect('/');
-  }
+router.get('/logout',function(req, res){
+  req.session.destroy();
+  res.redirect('/');
 });
 
 router.get('/get_traffic', function(req, res) {
@@ -104,8 +101,41 @@ router.put('/set_user_status/:_id/:status', (req, res) => {
   })
 });
 
+router.post('/create_new', function(req, res, next) {
+  if (!req.session._id) {
+    req.session.destroy();
+    res.redirect('/');
+  }else{
+    var news = new News();
+    news.id_user = req.session._id;
+    news.title = req.body.title;
+    news.description = req.body.description;
+    news.event_type = req.body.event_type;
+    news.node = req.body.location;
+
+    news.save(function(err, newStored){
+      if (err) {
+        res.status(200).send({message: 'Error al guardar la base de datos '+err});
+      }else {
+        Vias.update(
+          {nodo:req.body.location},
+          {status:0},
+          function(err){
+            if (err) {
+              console.log(err);
+            }else {
+              res.status(200).send('1');
+            }
+          }
+        )
+      }
+    })
+  }
+});
+
+
 router.post('/get_news', function(req, res) {
-  var userRegex = new RegExp(req.body.name, 'i');
+  var userRegex = new RegExp(req.body.title, 'i');
   if (req.body.type == '') {
     News.aggregate([
       {$match:{title: userRegex}},
@@ -114,7 +144,8 @@ router.post('/get_news', function(req, res) {
           localField:'id_user',
           foreignField: '_id',
           as: 'user'}
-      }
+      },
+      {$sort:{created:-1}}
     ])
     .exec(function(err, news){
       if (err) {
@@ -126,13 +157,14 @@ router.post('/get_news', function(req, res) {
 
   }else {
     News.aggregate([
-      {$match:{$and:[{title: userRegex},{event_type:req.body.type}]}},
+      {$match:{$and:[{title: userRegex}, {event_type:parseInt(req.body.type)}]}},
       {$lookup: {
           from: 'users',
           localField:'id_user',
           foreignField: '_id',
           as: 'user'}
-      }
+      },
+      {$sort:{created:-1}}
     ])
     .exec(function(err, news){
       if (err) {
@@ -181,6 +213,18 @@ router.put('/set_user_status/:_id/:status', (req, res) => {
       res.status(200).send({message: 'Error al actualizar en la base de datos '+err});
     }else {
       res.status(200).send('1');
+    }
+  })
+});
+
+router.get('/get_nodo_info/:nodo', (req, res) => {
+  Vias.findOne({
+    "nodo":req.params.nodo
+  }, function(err,via){
+    if (via) {
+      res.status(200).send({via:via});
+    }else {
+      res.status(200).send({via:null});
     }
   })
 });

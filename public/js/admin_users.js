@@ -26,20 +26,22 @@ $('form#search_users').submit(function(event) {
           html += '<th class="text-center">Accion</th>';
         html += '</tr>';
         for (var i = 0; i < msg.users.length; i++) {
-          html += '<tr>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+msg.users[i].firstName+' '+msg.users[i].lastName+'</td>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+msg.users[i].email+'</td>';
-            html += '<td style="vertical-align:middle;" class="text-center">'+cars[msg.users[i].status]+'</td>';
-            if (msg.users[i].status == 0) {
-              html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="delete_user(\''+msg.users[i]._id+'\')" class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span>Eliminar</button></td>';
-            }else {
-              if (msg.users[i].status == 1) {
-                  html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status(\''+msg.users[i]._id+'\',2)" class="btn btn-warning btn-sm"><span class="fa fa-ban"></span> Deshabilitar</button></td>';
+          if (msg.users[i].email != 'admin@admin.gob' ) {
+            html += '<tr>';
+              html += '<td style="vertical-align:middle;" class="text-center">'+msg.users[i].firstName+' '+msg.users[i].lastName+'</td>';
+              html += '<td style="vertical-align:middle;" class="text-center">'+msg.users[i].email+'</td>';
+              html += '<td style="vertical-align:middle;" class="text-center">'+cars[msg.users[i].status]+'</td>';
+              if (msg.users[i].status == 0) {
+                html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="delete_user(\''+msg.users[i]._id+'\')" class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span>Eliminar</button></td>';
               }else {
-                  html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status(\''+msg.users[i]._id+'\',1)" class="btn btn-success btn-sm"><span class="fas fa-check-circle"></span> Habilitar</button></td>';
+                if (msg.users[i].status == 1) {
+                    html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status(\''+msg.users[i]._id+'\',2)" class="btn btn-warning btn-sm"><span class="fa fa-ban"></span> Deshabilitar</button></td>';
+                }else {
+                    html += '<td style="vertical-align:middle;" class="text-center"><button type="button" onclick="set_status(\''+msg.users[i]._id+'\',1)" class="btn btn-success btn-sm"><span class="fas fa-check-circle"></span> Habilitar</button></td>';
+                }
               }
-            }
-          html += '</tr>';
+            html += '</tr>';
+          }
       }
       html += '</table>';
       $('div#result').html(html);

@@ -217,7 +217,8 @@ router.get('/news', async function (req, res) {
               localField:'id_user',
               foreignField: '_id',
               as: 'user'}
-          }
+          },
+          {$sort:{created:-1}}
         ])
         .exec(function(err, news) {
           if (err) {
@@ -232,6 +233,7 @@ router.get('/news', async function (req, res) {
       return new Promise(function(response,reject){
         News.find({'id_user':req.session._id})
         .select('_id title description created node')
+        .sort({created:'desc'})
         .exec(function(err, news) {
           if (err) {
             console.log(err);

@@ -15,22 +15,28 @@
         <div class="row">
           <div class="col-4">
             <label for="">Titulo</label>
-            <input type="text" id="title" class="form-control">
+            <input type="text" autocomplete="off" id="title" required class="form-control">
             <br>
             <label for="">Descripción</label>
-            <textarea id="description" class="form-control"></textarea>
-            <br>
-            <label for="">Duración</label>
-            <input type="text" id="duration" class="form-control">
+            <textarea id="description" autocomplete="off" required class="form-control" rows="3"></textarea>
             <br>
             <label for="">Tipo</label>
-            <select class="form-control" required id="event_type">
-              <option value="">Seleccione Una Opción</option>
-              <option value="1">Bloqueo, Manifestación</option>
-              <option value="2">Evento Social</option>
-              <option value="3">Mantenimiento de Vias</option>
-              <option value="4">Otros</option>
-            </select>
+            <div class="custom-control custom-radio">
+              <input type="radio" id="event_type1" name="event_type" value="1" checked="" class="custom-control-input">
+              <label class="custom-control-label" for="event_type1">Bloqueo, Manifestación</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input type="radio" id="event_type2" name="event_type" value="2" class="custom-control-input">
+              <label class="custom-control-label" for="event_type2">Evento Social</label>Evento Social
+            </div>
+            <div class="custom-control custom-radio">
+              <input type="radio" id="event_type3" name="event_type" value="3" class="custom-control-input">
+              <label class="custom-control-label" for="event_type3">Mantenimiento de Vias</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input type="radio" id="event_type4" name="event_type" value="4" class="custom-control-input">
+              <label class="custom-control-label" for="event_type4">Otros</label>
+            </div>
           </div>
           <div class="col-8">
             <label for="">Ubicación</label>

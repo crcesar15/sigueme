@@ -31,8 +31,7 @@ var enable_map = function(addMarker) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lat:-16.495637, lng:-68.133544
       };
       map = new google.maps.Map(document.getElementById('map'), {
         center: pos,
@@ -89,7 +88,7 @@ var validate = function(act_position) {
     }
     // console.log('position: '+ant_position);
     // console.log('distancia: '+distancia);
-    // console.log('tiempo: '+timer);0000000000000000000000000000000000000000000000000000000000000000000000000555
+    // console.log('tiempo: '+timer);
   } else {
     // algoritmo de logica difusa
     timer = 1000;

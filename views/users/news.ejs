@@ -24,7 +24,11 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-4">
-                      <p class="text-center"><i class="fas fa-user" style="font-size:45px; color:rgb(158, 158, 158)" aria-hidden></i></p>
+                      <%if(user.profileImage == ''){%>
+                        <p class="text-center"><i class="fas fa-user" style="font-size:45px; color:rgb(158, 158, 158)" aria-hidden></i></p>
+                      <%}else {%>
+                        <img src="https://192.168.43.162:3000/<%=user.profileImage%>" width="60" height="60" class="img-fluid">
+                      <%}%>
                       <p class="card-text text-center" style="font-size:10px;">Tú</p>
                     </div>
                     <div class="col-8">
@@ -61,7 +65,13 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-4">
-                      <p class="text-center"><i class="fas fa-user" style="font-size:45px;color:rgb(158, 158, 158);"  aria-hidden></i></p>
+                      <%if(notice.user[0].profileImage == ''){%>
+                        <p class="text-center"><i class="fas fa-user" style="font-size:45px; color:rgb(158, 158, 158)" aria-hidden></i></p>
+                      <%}else {%>
+                        <center>
+                          <img src="https://192.168.43.162:3000/<%=notice.user[0].profileImage%>" width="60" height="60">
+                        </center>
+                      <%}%>
                       <p class="card-text text-center" style="font-size:10px;"><%=notice.user[0].firstName%> <%=notice.user[0].lastName%></p>
                     </div>
                     <div class="col-8">

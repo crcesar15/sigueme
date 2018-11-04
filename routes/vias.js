@@ -19,7 +19,7 @@ router.get('/routes', function(req, res, next) {
 
 router.get('/update_routes', function(req, res, next) {
   Via.find()
-  .select('nodo traffic')
+  .select('nodo route duration traffic')
   .sort({nodo: 'asc'})
   .exec(function(err, vias) {
           res.status(200).send(vias)

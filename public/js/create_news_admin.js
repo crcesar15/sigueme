@@ -1,16 +1,70 @@
+$('li#create_new').addClass('active');
 var ant_marker;
 var event_direction;
+var flightPath = null;
+var nodo;
 // Adds a marker to the map.
-function addMarker(location, map) {
-  if(ant_marker != null){
-    ant_marker.setMap(null);
+async function addMarker(location, map) {
+  var k;
+  if(flightPath != null){
+    flightPath.setMap(null);
   }
-  var marker = new google.maps.Marker({
-    position: location,
-    map: map
+  k = 1;
+  event_node = null;
+  location = {
+    lat: location.lat(),
+    lng: location.lng()
+  }
+  while (event_node == null && k < 7) {
+    event_node = await get_nodo(location,k*10);
+    k = k + 1;
+  }
+  addLine(event_node.origin.lng,event_node.origin.lat,event_node.destination.lng,event_node.destination.lat);
+  nodo = event_node.nodo;
+}
+
+var get_nodo = function(position,distance){
+  return new Promise(function(response, reject){
+    $.ajax({
+      url: 'https://192.168.43.162:3000/users/get_nodo_more/'+distance,
+      type: 'POST',
+      contentType: 'application/json',
+      dataType: 'JSON',
+      data: JSON.stringify(position)
+    })
+    .done(function(msg) {
+      response(msg.via);
+    })
+    .fail(function() {
+      response(0);
+    });
   });
-  event_direction = location;
-  ant_marker = marker;
+}
+
+function addLine(origen_lng,origen_lat,destino_lng,destino_lat) {
+  origen = {
+    lng: origen_lng,
+    lat: origen_lat
+  }
+  destino = {
+    lng: destino_lng,
+    lat: destino_lat
+  }
+  coordenadas = [origen,destino];
+  event_direction = [origen,destino];
+  console.log(coordenadas);
+  // if (i != 0) {
+  //   console.log('entro');
+  //   flightPath.setMap(null);
+  // }
+  flightPath = new google.maps.Polyline({
+    path: coordenadas,
+    strokeColor: '#ffb000',
+    strokeOpacity: 1.0,
+    strokeWeight: 5
+  });
+  flightPath.setMap(map);
+  i = 1;
 }
 
 $(document).ready(function() {
@@ -19,28 +73,31 @@ $(document).ready(function() {
 
 $('form#create_new').submit(function(event) {
   event.preventDefault();
-  event_direction = {
-      lat:event_direction.lat(),
-      lng:event_direction.lng()
-  }
   datos = {
     title: $('input#title').val(),
     description: $('textarea#description').val(),
-    event_type: $('select#event_type').val(),
-    location: event_direction
+    event_type: $('input:radio[name=event_type]:checked').val(),
+    location: nodo
   }
-  $.ajax({
-    url: 'https://192.168.43.162:3000/users/create_new',
-    type: 'POST',
-    contentType: 'application/json',
-    dataType: 'JSON',
-    data: JSON.stringify(datos),
-  })
-  .done(function(msg) {
-    console.log(msg);
-  })
-  .fail(function() {
-    console.log("error");
-  })
+  console.log(datos);
+  if (datos.location) {
+    $.ajax({
+      url: 'https://192.168.43.162:3000/admin/create_new',
+      type: 'POST',
+      contentType: 'application/json',
+      dataType: 'JSON',
+      data: JSON.stringify(datos),
+    })
+    .done(function(msg) {
+      if (msg == 1) {
+        window.location.href = 'https://192.168.43.162:3000/admin/news';
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    })
+  }else {
+    alert('Seleccione la via donde se ubica el evento en el mapa');
+  }
 
 });
