@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var session = require('express-session');
 var News = require('../models/news.js');
+var Transit = require('../models/transit.js');
 var Users = require('../models/users.js');
 var Vias = require('../models/vias.js');
 var Busqueda = require('../models/busqueda');
@@ -18,6 +19,16 @@ router.get('/', function(req, res) {
     res.redirect('/');
   }else {
     res.render('admin/home');
+  }
+});
+
+router.get('/reports', function(req, res) {
+  console.log(req.session.id);
+  if (!req.session.admin) {
+    req.session.destroy();
+    res.redirect('/');
+  }else {
+    res.render('admin/reports');
   }
 });
 
@@ -228,5 +239,40 @@ router.get('/get_nodo_info/:nodo', (req, res) => {
     }
   })
 });
+
+router.post('/set_traffic', (req, res) => {
+  var transit = new Transit();
+  transit.id_via = req.body.id_via;
+  transit.traffic = req.body.traffic;
+  transit.save(function(err,transit){
+    if (err) {
+      res.status(200).send('0');
+    }else{
+      res.status(200).send(transit);
+    }
+  });
+});
+
+router.get('/get_transit/:id', function(req, res) {
+  id = req.params.id;
+  console.log(id);
+  Transit.aggregate([
+    {$match:{id_via: mongoose.Types.ObjectId(id)}},
+    {$lookup: {
+        from: 'vias',
+        localField:'id_via',
+        foreignField: '_id',
+        as: 'via'}
+    },
+  ])
+  .exec(function(err, transit){
+    if (err) {
+      console.log(err);
+    }else {
+      res.status(200).send({transit:transit});
+    }
+  });
+});
+
 
 module.exports = router;

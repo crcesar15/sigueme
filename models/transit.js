@@ -1,24 +1,19 @@
 var mongoose = require('mongoose');
 
+var traf = mongoose.Schema({
+  traffic:{
+    type: [Number],
+    required: true
+  }
+});
+
 var transitSchema = mongoose.Schema({
   id_via:{
     type: mongoose.Schema.Types.ObjectId,
     ref:'Vias',
     required:true
   },
-  durationStd:{
-    type: Number,
-    required: true
-  },
-  durationReal:{
-    type: Number,
-    required: true
-  },
-  concurrence:{
-    type: Number,
-    require: true,
-    default: 0
-  }
+  traffic:[traf]
 });
 
-module.exports = mongoose.model('New',transitSchema);
+module.exports = mongoose.model('Transit',transitSchema);

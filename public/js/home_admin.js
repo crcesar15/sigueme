@@ -1,5 +1,5 @@
 $('li#home').addClass('active');
-var map;
+var map2;
 var draws = [];
 $(document).ready(function() {
   var myStyles =[
@@ -11,7 +11,7 @@ $(document).ready(function() {
           ]
       }
   ];
-  map = new google.maps.Map(document.getElementById('map'), {
+  map2 = new google.maps.Map(document.getElementById('map2'), {
     center: {lat:-16.495670, lng:-68.133529},
     zoom: 16,
     streetViewControl: false,
@@ -45,7 +45,7 @@ var get_traffic = function(){
           color = '#ff2626'
           break;
       }
-      addLine(msg[i], map, color);
+      addLine(msg[i], map2, color);
     }
   })
   .fail(function() {
