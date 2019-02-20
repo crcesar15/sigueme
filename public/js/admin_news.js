@@ -3,6 +3,7 @@ $('li#news').addClass('active');
 var cars = ['','Bloqueo, Manifestación','Evento Social','Mantenimiento de Vias','Otros']
 
 $(document).ready(function() {
+  $('button#search_button').click();
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 17,
     center: {lat:-16.492097, lng:-68.137898}

@@ -31,6 +31,7 @@ router.post('/', function(req, res, next) {
   via.route = req.body.route;
   via.origin = req.body.origin;
   via.destination = req.body.destination;
+  via.middle = req.body.middle;
   via.distance = req.body.distance;
   via.duration = req.body.duration;
   console.log(via);

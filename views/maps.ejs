@@ -205,12 +205,17 @@
         origin = JSON.parse(origin);
         destination = $('input#destino').val();
         destination = JSON.parse(destination);
+        middle = {
+          lat: ((origin.lat + destination.lat)/2),
+          lng: ((origin.lng + destination.lng)/2)
+        }
         datos = {
           route: $('input#ruta').val(),
           origin: origin,
           destination:destination,
           duration: $('input#duration').val(),
-          distance: $('input#distance').val()
+          distance: $('input#distance').val(),
+          middle: middle
         }
         $.ajax({
           url: '/vias',
@@ -230,7 +235,7 @@
         .fail(function() {
           alert('Ops. Ocurrio un error');
         });
-        // window.location.reload();
+        window.location.reload();
       });
 
       google.maps.event.addDomListener(window, 'load', initialize);

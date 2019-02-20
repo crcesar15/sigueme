@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <table>
+      <% for(var i=0; i<vias.length; i++) {%>
+        <tr>
+          <td>
+            <form method="POST" action="https://192.168.43.162:3000/admin/set_traffic/<%=vias[i]._id%>/<%=vias[i].traffic%>">
+              <button type="submit" name="button">enviar</button>
+            </form>
+          </td>
+        </tr>
+      <% } %>
+    </table>
+  </body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+  $('form').submit(function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      type: 'POST',
+      dataType: 'text'
+    })
+    .done(function(msg) {
+      console.log(msg);
+      $(this).css('display', 'none');
+    })
+    .fail(function() {
+      console.log("error");
+    });
+  });
+
+  $(document).ready(function() {
+    data = $('button');
+    for (var i = 0; i < data.length; i++) {
+      data[i].click();
+    }
+  });
+</script>

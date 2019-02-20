@@ -3,6 +3,7 @@ var ant_marker;
 var event_direction;
 var flightPath = null;
 var nodo;
+var url;
 var myChart;
 var weak = [];
 var transit;
@@ -59,7 +60,8 @@ var chartData = {
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero:true
+                    beginAtZero:true,
+                    max:100
                 }
             }]
         }
@@ -97,6 +99,9 @@ var get_nodo = function(position,distance){
       data: JSON.stringify(position)
     })
     .done(function(msg) {
+      url = 'http://192.168.43.162/sgcn/pdf/index/'+msg.via.route+'/'+msg.via.duration+'/'+msg.via.distance;
+      console.log(url);
+      $('h5#viaTag').html(msg.via.route);
       response(msg.via);
     })
     .fail(function() {
@@ -217,4 +222,8 @@ function mean(numbers) {
         total += numbers[i];
     }
     return total / numbers.length;
+}
+
+var exportarPdf = function(){
+  window.open(url, '_blank');
 }

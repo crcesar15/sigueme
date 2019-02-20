@@ -41,6 +41,11 @@ var viaSchema = mongoose.Schema({
     type: Number,
     require: true,
     default: 1
+  },
+  traffic:{
+    type:Number,
+    require: true,
+    default:0
   }
 });
 

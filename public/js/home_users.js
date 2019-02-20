@@ -183,15 +183,15 @@ var get_route = function(){
       .done(function(msg) {
         msg1 = msg.route.ruta1;
         msg2 = msg.route.ruta2;
-        console.log(msg1);
-        console.log(msg2);
+        // console.log(msg1);
+        // console.log(msg2);
 
         var tiempo = 0;
         var tiempo1 = 0;
         var tiempo2 = 0
         var distancia = 0;
-        console.log('busca:'+msg2[0].nodo);
-        console.log('destino:'+destination_node);
+        // console.log('busca:'+msg2[0].nodo);
+        // console.log('destino:'+destination_node);
         if (msg2[0].nodo == destination_node) {
           for (var i = 0; i < msg1.length; i++) {
             // addLine(msg1[i], map, '#429bcd');
@@ -199,6 +199,8 @@ var get_route = function(){
             // distancia = distancia + msg1[i].distance;
           }
           for (var i = 0; i < msg2.length; i++) {
+            console.log(msg2[i]);
+            console.log(msg2[i].traffic);
             // addLine(msg1[i], map, '#429bcd');
             tiempo2 = tiempo2 + (msg2[i].duration + msg2[i].duration * (msg2[i].traffic/100));
             // distancia = distancia + msg1[i].distance;
@@ -228,6 +230,8 @@ var get_route = function(){
           }
         }else {
           for (var i = 0; i < msg1.length; i++) {
+            console.log(msg1[i]);
+            console.log(msg1[i].duration);
             addLine(msg1[i], map, '#429bcd');
             tiempo1 = tiempo1 + (msg1[i].duration + msg1[i].duration * msg1[i].traffic/100);;
             distancia = distancia + msg1[i].distance;

@@ -8,12 +8,27 @@ var Vias = require('../models/vias.js');
 var Busqueda = require('../models/busqueda');
 var mongoose = require('mongoose');
 var moment = require('moment');
+var puppeteer = require('puppeteer');
+var fs = require('fs-extra');
+var handlebars = require('handlebars');
+var path = require('path');
 
 moment.locale('es');
 
+var compile = async function(templateName,id){
+  var filePath = path.join(process.cwd(),'views',`${templateName}.hbs`);
+  var html = await fs.readFile(filePath, 'utf-8');
+  // console.log(html);
+  // console.log(html);
+  var data = await datos(id);
+  console.log(data);
+  var template = await handlebars.compile(html)
+  return await handlebars.template(data);
+}
+
 /* vista inicial de usuarios*/
 router.get('/', function(req, res) {
-  console.log(req.session.id);
+  // console.log(req.session.id);
   if (!req.session.admin) {
     req.session.destroy();
     res.redirect('/');
@@ -23,7 +38,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/reports', function(req, res) {
-  console.log(req.session.id);
+  // console.log(req.session.id);
   if (!req.session.admin) {
     req.session.destroy();
     res.redirect('/');
@@ -33,7 +48,7 @@ router.get('/reports', function(req, res) {
 });
 
 router.get('/add_new', function(req, res) {
-  console.log(req.session.id);
+  // console.log(req.session.id);
   if (!req.session.admin) {
     req.session.destroy();
     res.redirect('/');
@@ -240,22 +255,181 @@ router.get('/get_nodo_info/:nodo', (req, res) => {
   })
 });
 
-router.post('/set_traffic', (req, res) => {
+router.get('/fill_traffic', (req, res) => {
+  Vias.find({},'_id traffic',
+    async function(err, vias) {
+      if (vias) {
+        res.render('admin/vias',{vias:vias});
+      } else {
+        console.log('error');
+      }
+    })
+});
+
+router.post('/set_traffic/:_id/:traffic', (req, res) => {
+  // console.log(req.params);
   var transit = new Transit();
-  transit.id_via = req.body.id_via;
-  transit.traffic = req.body.traffic;
-  transit.save(function(err,transit){
+  percent = parseFloat(req.params.traffic);
+  data = {
+    id_via: req.params._id,
+    traffic: [{
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      },
+      {
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      },
+      {
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      },
+      {
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      },
+      {
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      },
+      {
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      },
+      {
+        traffic: [
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+          parseFloat(percent + ((Math.random() * 19) - 9)).toFixed(2),
+        ]
+      }
+    ]
+  }
+  transit.id_via = data.id_via;
+  transit.traffic = data.traffic;
+  // console.log(transit);
+  transit.save(function(err, transit) {
     if (err) {
-      res.status(200).send('0');
-    }else{
-      res.status(200).send(transit);
+      console.log(err);
+      res.status(200).send('1');
+    } else {
+      res.status(200).send('1');
     }
   });
 });
 
 router.get('/get_transit/:id', function(req, res) {
   id = req.params.id;
-  console.log(id);
+  // console.log(id);
   Transit.aggregate([
     {$match:{id_via: mongoose.Types.ObjectId(id)}},
     {$lookup: {
@@ -272,6 +446,59 @@ router.get('/get_transit/:id', function(req, res) {
       res.status(200).send({transit:transit});
     }
   });
+});
+
+router.get('/get_pdf/:_id', async (req, res) => {
+  var compile = async function(templateName,id){
+    var filePath = path.join(process.cwd(),'views',`${templateName}.ejs`);
+    var html = await fs.readFile(filePath, 'utf-8');
+    // console.log(html);
+    // console.log(html);
+    // var data = await datos(id);
+    var data = {title:'holass'}
+    var template = await handlebars.compile(html)
+    return handlebars.template(data);
+  }
+
+  var datos = function(id){
+    return new Promise(function(res,rej){
+      Transit.aggregate([
+       {$match:{id_via: mongoose.Types.ObjectId(id)}},
+       {$lookup: {
+           from: 'vias',
+           localField:'id_via',
+           foreignField: '_id',
+           as: 'via'}
+       },
+     ])
+     .exec(function(err, transit){
+       if (err) {
+         rej(err);
+       }else {
+         res(transit);
+       }
+     });
+    });
+  }
+  try {
+    var browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    var page = await browser.newPage();
+    var content = await compile('reportes',req.params._id);
+    // console.log(content);
+    await page.setContent(content);
+    await page.emulateMedia('screen');
+    await page.pdf({
+      path: 'public/files/report.pdf',
+      format: 'letter',
+      printBackground: true
+    });
+    console.log('done');
+    await browser.close();
+    process.exit();
+  } catch (e) {
+    console.log(e);
+  }
+
 });
 
 
